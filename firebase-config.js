@@ -1,17 +1,21 @@
-// ==================== FIREBASE CONFIG ====================
+// ==================== FIREBASE CONFIG - SCHULPROJEKT ====================
 
 const firebaseConfig = {
-    apiKey: "AIzaSyxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",           // ← DEIN API KEY
+    apiKey: "HIER_DEIN_API_KEY_EINFÜGEN",
     authDomain: "escape-room-ed686.firebaseapp.com",
     databaseURL: "https://escape-room-ed686-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "escape-room-ed686",
     storageBucket: "escape-room-ed686.appspot.com",
-    messagingSenderId: "123456789012",                       // ← deine Sender ID
-    appId: "1:123456789012:web:xxxxxxxxxxxxxxxxxxxxxxxx"     // ← deine App ID
+    messagingSenderId: "HIER_SENDER_ID_EINFÜGEN",
+    appId: "HIER_APP_ID_EINFÜGEN"
 };
 
-// Firebase initialisieren
-firebase.initializeApp(firebaseConfig);
-window.database = firebase.database();
-
-console.log("✅ Firebase erfolgreich verbunden!");
+// Firebase starten
+if (firebaseConfig.apiKey !== "HIER_DEIN_API_KEY_EINFÜGEN") {
+    firebase.initializeApp(firebaseConfig);
+    window.database = firebase.database();
+    console.log("✅ Firebase erfolgreich verbunden!");
+} else {
+    console.error("❌ Firebase Config noch nicht ausgefüllt!");
+    alert("Firebase ist noch nicht konfiguriert! Schau in firebase-config.js");
+}
