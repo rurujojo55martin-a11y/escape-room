@@ -140,56 +140,64 @@ function joinMultiplayerRoom() {
     });
 }
 
-// Lobby-Anzeige steuern und auf Firebase-Updates hören
+// Lobby-Anzeige + Listener
 function setupMultiplayerLobby() {
     document.getElementById("display-code").innerText = roomCode;
-    document.getElementById("waiting-area").classList.remove("card-hidden");
     document.getElementById("waiting-area").classList.remove("hidden");
-    
+
     if (isHost) {
         document.getElementById("btn-start-game").classList.remove("hidden");
-        document.getElementById("btn-start-game").addEventListener("click", startMultiplayerGame);
+        document.getElementById("btn-start-game").onclick = startMultiplayerGame;
     } else {
         document.getElementById("wait-message").classList.remove("hidden");
     }
 
     // Spielerliste live updaten
     roomRef.child('players').on('value', (snapshot) => {
-        let players = snapshot.val();
+        let players = snapshot.val() || {};
         let listHtml = "";
         let chipHtml = "";
-        
-        for(let p in players) {
-            let pName = players[p].name;
-            let pHost = players[p].isHost ? " (Host)" : "";
-            listHtml += `<li>💻 ${pName}${pHost}</li>`;
-            chipHtml += `<span class="chip ${players[p].isHost ? 'host' : ''}">${pName}</span>`;
+
+        for(let key in players) {
+            let p = players[key];
+            let extra = p.isHost ? " (Host)" : "";
+            listHtml += `<li>💻 ${p.name}${extra}</li>`;
+            chipHtml += `<span class="chip ${p.isHost ? 'host' : ''}">${p.name}</span>`;
         }
         document.getElementById("lobby-player-list").innerHTML = listHtml;
         document.getElementById("game-player-list").innerHTML = chipHtml;
     });
 
-    // Auf Spielstart hören
+    // Auf Spielstart hören (sehr wichtig!)
     roomRef.child('gameState').on('value', (snapshot) => {
         if(snapshot.val() === "playing") {
-            // Fragen aus der DB holen (da der Host sie generiert hat)
-            roomRef.child('questions').once('value', (qSnapshot) => {
-                currentRoomQuestions = qSnapshot.val();
-                
-                // Wechsel ins Spiel
-                lobbyScreen.classList.add("hidden");
-                gameScreen.classList.remove("hidden");
-                document.getElementById("game-room-code-display").innerText = roomCode;
-                
-                startTimer();
-                listenToGameSync(); // Sync-Listener starten
+            console.log("✅ Spielstart erkannt auf Handy!");
+
+            roomRef.child('questions').once('value', (qSnap) => {
+                if(qSnap.exists()) {
+                    currentRoomQuestions = qSnap.val();
+                    lobbyScreen.classList.add("hidden");
+                    gameScreen.classList.remove("hidden");
+                    document.getElementById("game-room-code-display").innerText = roomCode;
+                    
+                    startTimer();
+                    listenToGameSync();
+                }
             });
         }
     });
 }
-
 function startMultiplayerGame() {
-    roomRef.update({ gameState: "playing" });
+    if (!roomRef) return;
+    
+    roomRef.update({
+        gameState: "playing",
+        currentQuestionIndex: 0
+    }).then(() => {
+        console.log("🚀 Spiel wurde an alle gesendet!");
+    }).catch((error) => {
+        console.error("Fehler beim Starten:", error);
+    });
 }
 
 // Sync während des laufenden Spiels (Kahoot-Style)
