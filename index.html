@@ -3,32 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multiplayer Escape Room</title>
-    
+    <title>InfoEscape - Informatik Escape Room</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 </head>
 <body>
 
-    <div class="room-container">
-        <h1>Multiplayer: Raum 1</h1>
-        <p>Ihr müsst zusammenarbeiten! Wenn einer den Code knackt, entkommt ihr beide.</p>
+    <!-- Lobby -->
+    <div id="lobby-screen" class="container">
+        <h1>🔓 InfoEscape</h1>
+        <p class="subtitle">Kannst du aus dem Serverraum entkommen?</p>
         
-        <blockquote style="font-style: italic; color: #ff9900;">
-            "Das Jahr, in dem das World Wide Web erfunden wurde..."
-        </blockquote>
-
-        <div id="game-content">
-            <input type="text" id="codeEingabe" placeholder="????" maxlength="4">
-            <br>
-            <button onclick="pruefeCode()">Code senden</button>
+        <div class="card">
+            <label for="username">Dein Name (max 12 Zeichen):</label>
+            <input type="text" id="username" placeholder="z.B. MaxGamer" maxlength="12">
+            
+            <hr>
+            
+            <button id="btn-singleplayer" class="btn btn-green">Allein spielen</button>
+            
+            <hr>
+            
+            <button id="btn-create-host" class="btn btn-blue">Neues Spiel erstellen (Host)</button>
+            
+            <div class="join-box">
+                <input type="text" id="join-code" placeholder="6-stelliger Code" maxlength="6">
+                <button id="btn-join" class="btn btn-orange">Beitreten</button>
+            </div>
         </div>
 
-        <div id="ausgabe" class="message">Warte auf Verbindung zum Server...</div>
-        
-        <button onclick="resetGame()" style="background-color: #ff3333; color: white; margin-top: 20px; font-size: 12px; padding: 5px 10px;">Spiel zurücksetzen</button>
+        <div id="waiting-area" class="card hidden">
+            <h3>Raum-Code: <span id="display-code" class="highlight">------</span></h3>
+            <p>Schick den Code deinen Freunden!</p>
+            <h4>Spieler im Raum:</h4>
+            <ul id="lobby-player-list"></ul>
+            <button id="btn-start-game" class="btn btn-green hidden">Spiel starten!</button>
+        </div>
     </div>
 
-    <script type="module" src="script.js"></script>
+    <!-- Game Screen -->
+    <div id="game-screen" class="container-fluid hidden">
+        <header class="game-header">
+            <div class="header-info">
+                <span>Raum <strong id="current-room-num">1</strong>/8</span>
+                <span>Zeit: <strong id="game-timer">00:00</strong></span>
+                <span>Code: <strong id="game-room-code-display">-</strong></span>
+            </div>
+            <div id="game-player-list" class="player-chips"></div>
+        </header>
 
+        <main class="game-layout">
+            <section class="quiz-area card">
+                <h2 id="question-text">Frage wird geladen...</h2>
+                <p id="question-hint" class="hint"></p>
+                
+                <div id="answer-container"></div>
+                
+                <div class="action-bar">
+                    <button id="btn-submit-answer" class="btn btn-green">Antwort prüfen</button>
+                    <button id="btn-next-question" class="btn btn-blue hidden">Nächster Raum →</button>
+                    <p id="feedback-text"></p>
+                </div>
+            </section>
+
+            <aside class="chat-area card">
+                <h3>💬 Chat</h3>
+                <div id="chat-messages"></div>
+                <div class="chat-input-box">
+                    <input type="text" id="chat-input" placeholder="Nachricht schreiben...">
+                    <button id="btn-send-chat">Senden</button>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <!-- End Screen -->
+    <div id="end-screen" class="container hidden">
+        <div class="card win-card">
+            <h1>🎉 Ihr habt es geschafft! 🎉</h1>
+            <h2>Zeit: <span id="final-time">00:00</span></h2>
+            <button onclick="location.reload()" class="btn btn-green">Nochmal spielen</button>
+        </div>
+    </div>
+
+    <script src="firebase-config.js"></script>
+    <script src="questions.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
