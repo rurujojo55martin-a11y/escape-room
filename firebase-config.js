@@ -1,21 +1,17 @@
-// ==================== FIREBASE CONFIG - SCHULPROJEKT ====================
+// ==================== FIREBASE CONFIG - InfoEscape ====================
 
 const firebaseConfig = {
-    apiKey: "HIER_DEIN_API_KEY_EINFÜGEN",
+    apiKey: "AIzaSyC2JaI5qdHBuPMkdJuxVfb0DaIfJRbWtf4",
     authDomain: "escape-room-ed686.firebaseapp.com",
     databaseURL: "https://escape-room-ed686-default-rtdb.europe-west1.firebasedatabase.app",
     projectId: "escape-room-ed686",
-    storageBucket: "escape-room-ed686.appspot.com",
-    messagingSenderId: "HIER_SENDER_ID_EINFÜGEN",
-    appId: "HIER_APP_ID_EINFÜGEN"
+    storageBucket: "escape-room-ed686.firebasestorage.app",
+    messagingSenderId: "1065510089327",
+    appId: "1:1065510089327:web:10443cb46c1b761463939a"
 };
 
-// Firebase starten
-if (firebaseConfig.apiKey !== "HIER_DEIN_API_KEY_EINFÜGEN") {
-    firebase.initializeApp(firebaseConfig);
-    window.database = firebase.database();
-    console.log("✅ Firebase erfolgreich verbunden!");
-} else {
-    console.error("❌ Firebase Config noch nicht ausgefüllt!");
-    alert("Firebase ist noch nicht konfiguriert! Schau in firebase-config.js");
-}
+// Firebase Version 8 (die wir im Projekt benutzen) initialisieren
+firebase.initializeApp(firebaseConfig);
+window.database = firebase.database();
+
+console.log("✅ Firebase erfolgreich verbunden! 🔥");
