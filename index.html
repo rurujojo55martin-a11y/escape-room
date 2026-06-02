@@ -3,106 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informatik Escape Room</title>
-    <style>
-        /* Hier wird das Aussehen (CSS) bestimmt */
-        body {
-            background-color: #1a1a1a;
-            color: #00ffcc;
-            font-family: 'Courier New', Courier, monospace;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-
-        .room-container {
-            text-align: center;
-            background-color: #222;
-            padding: 30px;
-            border: 2px solid #00ffcc;
-            border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
-            max-width: 400px;
-        }
-
-        input[type="text"] {
-            background-color: #333;
-            border: 1px solid #00ffcc;
-            color: #00ffcc;
-            padding: 10px;
-            font-size: 18px;
-            text-align: center;
-            width: 150px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        button {
-            background-color: #00ffcc;
-            color: #1a1a1a;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            border-radius: 5px;
-            transition: 0.3s;
-        }
-
-        button:hover {
-            background-color: #00b38f;
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
-        }
-
-        .message {
-            margin-top: 20px;
-            font-size: 18px;
-            font-weight: bold;
-        }
-    </style>
+    <title>Multiplayer Escape Room</title>
+    
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="room-container">
-        <h1>Raum 1: Die verschlossene Tür</h1>
-        <p>Du bist in einem düsteren Labor gefangen. An der Wand kratzt eine Nachricht im Putz:</p>
+        <h1>Multiplayer: Raum 1</h1>
+        <p>Ihr müsst zusammenarbeiten! Wenn einer den Code knackt, entkommt ihr beide.</p>
         
         <blockquote style="font-style: italic; color: #ff9900;">
-            "Das Jahr, in dem das World Wide Web (WWW) erfunden wurde..."
+            "Das Jahr, in dem das World Wide Web erfunden wurde..."
         </blockquote>
 
-        <p>Gib den 4-stelligen Code ein, um das elektronische Schloss zu öffnen:</p>
-        
-        <input type="text" id="codeEingabe" placeholder="????", maxlength="4">
-        <br>
-        <button onclick="pruefeCode()">Schloss öffnen</button>
+        <div id="game-content">
+            <input type="text" id="codeEingabe" placeholder="????" maxlength="4">
+            <br>
+            <button onclick="pruefeCode()">Code senden</button>
+        </div>
 
-        <div id="ausgabe" class="message"></div>
+        <div id="ausgabe" class="message">Warte auf Verbindung zum Server...</div>
+        
+        <button onclick="resetGame()" style="background-color: #ff3333; color: white; margin-top: 20px; font-size: 12px; padding: 5px 10px;">Spiel zurücksetzen</button>
     </div>
 
-    <script>
-        // Hier kommt die Logik (JavaScript)
-        function pruefeCode() {
-            // Holt sich den Text, den der Spieler eingetippt hat
-            var eingabe = document.getElementById("codeEingabe").value;
-            var ausgabeFeld = document.getElementById("ausgabe");
-
-            // Der richtige Code (Das WWW wurde 1989 erfunden)
-            var loesung = "1989";
-
-            if (eingabe === loesung) {
-                // Wenn der Code richtig ist:
-                ausgabeFeld.style.color = "#33ff33"; // Text wird grün
-                ausgabeFeld.innerHTML = "🔓 KLICK... Das Schloss öffnet sich! Du hast Raum 1 entkommen!";
-            } else {
-                // Wenn der Code falsch ist:
-                ausgabeFeld.style.color = "#ff3333"; // Text wird rot
-                ausgabeFeld.innerHTML = "❌ FALSCH! Das Schloss bleibt verriegelt. Such weiter nach Hinweisen!";
-            }
-        }
-    </script>
+    <script type="module" src="script.js"></script>
 
 </body>
 </html>
