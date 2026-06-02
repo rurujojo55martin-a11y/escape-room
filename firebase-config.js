@@ -1,4 +1,5 @@
 // ==================== FIREBASE CONFIG - InfoEscape ====================
+// Für Firebase SDK Version 8 (passt zum Projekt)
 
 const firebaseConfig = {
     apiKey: "AIzaSyC2JaI5qdHBuPMkdJuxVfb0DaIfJRbWtf4",
@@ -10,7 +11,7 @@ const firebaseConfig = {
     appId: "1:1065510089327:web:10443cb46c1b761463939a"
 };
 
-// Firebase Version 8 (die wir im Projekt benutzen) initialisieren
+// Firebase initialisieren
 firebase.initializeApp(firebaseConfig);
 window.database = firebase.database();
 
