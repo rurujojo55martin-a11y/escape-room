@@ -140,48 +140,58 @@ function joinMultiplayerRoom() {
     });
 }
 
-// Lobby-Anzeige + Listener
-function setupMultiplayerLobby() {
-    document.getElementById("display-code").innerText = roomCode;
-    document.getElementById("waiting-area").classList.remove("hidden");
+function startMultiplayerGame() {
+    console.log("Host startet das Spiel...");
+    
+    roomRef.update({
+        gameState: "playing",
+        currentQuestionIndex: 0
+    }).then(() => {
+        console.log("✅ Update erfolgreich an Firebase gesendet!");
+    }).catch(err => {
+        console.error("Fehler beim Update:", err);
+    });
+}
 
-    if (isHost) {
-        document.getElementById("btn-start-game").classList.remove("hidden");
-        document.getElementById("btn-start-game").onclick = startMultiplayerGame;
-    } else {
-        document.getElementById("wait-message").classList.remove("hidden");
-    }
-
-    // Spielerliste live updaten
+    // Spielerliste
     roomRef.child('players').on('value', (snapshot) => {
         let players = snapshot.val() || {};
         let listHtml = "";
         let chipHtml = "";
 
-        for(let key in players) {
+        Object.keys(players).forEach(key => {
             let p = players[key];
             let extra = p.isHost ? " (Host)" : "";
             listHtml += `<li>💻 ${p.name}${extra}</li>`;
             chipHtml += `<span class="chip ${p.isHost ? 'host' : ''}">${p.name}</span>`;
-        }
+        });
+
         document.getElementById("lobby-player-list").innerHTML = listHtml;
         document.getElementById("game-player-list").innerHTML = chipHtml;
     });
 
-    // Auf Spielstart hören (sehr wichtig!)
+    // WICHTIGSTER TEIL: Auf Spielstart warten
     roomRef.child('gameState').on('value', (snapshot) => {
-        if(snapshot.val() === "playing") {
-            console.log("✅ Spielstart erkannt auf Handy!");
+        const state = snapshot.val();
+        console.log("GameState geändert zu:", state);
+
+        if (state === "playing") {
+            console.log("🎉 Spielstart erkannt! Wechsle ins Spiel...");
 
             roomRef.child('questions').once('value', (qSnap) => {
-                if(qSnap.exists()) {
+                if (qSnap.exists()) {
                     currentRoomQuestions = qSnap.val();
-                    lobbyScreen.classList.add("hidden");
-                    gameScreen.classList.remove("hidden");
+                    
+                    // Ansicht wechseln
+                    document.getElementById("lobby-screen").classList.add("hidden");
+                    document.getElementById("game-screen").classList.remove("hidden");
+                    
                     document.getElementById("game-room-code-display").innerText = roomCode;
                     
                     startTimer();
                     listenToGameSync();
+                } else {
+                    console.error("Fragen wurden nicht gefunden!");
                 }
             });
         }
