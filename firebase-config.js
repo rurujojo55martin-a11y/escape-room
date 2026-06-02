@@ -3,10 +3,10 @@
 
 const firebaseConfig = {
     apiKey: "DEIN_API_KEY_HIER",
-    authDomain: "DEIN_PROJECT_ID.firebaseapp.com",
-    databaseURL: "https://DEIN_PROJECT_ID-default-rtdb.firebaseio.com", // Wichtig: Realtime DB URL
-    projectId: "DEIN_PROJECT_ID",
-    storageBucket: "DEIN_PROJECT_ID.appspot.com",
+    authDomain: "escape-room-ed686.firebaseapp.com",
+    databaseURL: "https://escape-room-ed686-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "escape-room-ed686",
+    storageBucket: "escape-room-ed686.appspot.com",
     messagingSenderId: "DEINE_SENDER_ID",
     appId: "DEINE_APP_ID"
 };
@@ -19,3 +19,4 @@ if (firebaseConfig.apiKey !== "DEIN_API_KEY_HIER") {
 } else {
     console.log("Firebase läuft im Offline-Modus (Keine Config hinterlegt).");
 }
+{
