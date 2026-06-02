@@ -20,3 +20,8 @@ if (firebaseConfig.apiKey !== "DEIN_API_KEY_HIER") {
     console.log("Firebase läuft im Offline-Modus (Keine Config hinterlegt).");
 }
 {
+  "rules": {
+    ".read": "now < 1782943200000",  // 2026-7-2
+    ".write": "now < 1782943200000",  // 2026-7-2
+  }
+}
